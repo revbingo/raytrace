@@ -35,6 +35,7 @@ public class SimpleRay {
 	private final JFrame frame;
 	private final DisplayPanel displayPanel;
 	private final Tracer tracer;
+	private Scene scene;
 
 	public JFrame getFrame() {
 		return frame;
@@ -50,10 +51,9 @@ public class SimpleRay {
 
 		displayPanel = new DisplayPanel();
 
-		tracer = new Tracer(displayPanel);
+		scene = new Scene();
+		tracer = new Tracer(displayPanel, scene);
 		tracer.createWorkers(16);
-
-		tracer.buildScene();
 
 		frame.add(displayPanel);
 
@@ -83,7 +83,7 @@ public class SimpleRay {
 					try {
 						t1 = t;
 
-						tracer.moveSphere();
+						scene.animate();
 
 						tracer.nextFrame(gr);
 
