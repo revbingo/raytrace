@@ -10,6 +10,7 @@ package tracer;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,22 +22,24 @@ import java.util.logging.Logger;
 public class Tracer {
 	private final DisplayInterface displayPanel;
 
+	private Scene scene;
+	private View view;
+	
 	private final ArrayList<WorkerThread> workers;
 
-	private volatile int doneCount;
-
-	private Scene scene;
-
-	public Tracer(DisplayInterface panel, Scene scene) {
+	private int doneCount;
+	
+	public Tracer(DisplayInterface panel, Scene scene, View view) {
 		this.displayPanel = panel;
 		this.workers = new ArrayList<WorkerThread>();
 		this.doneCount = 0;
 		this.scene = scene;
+		this.view = view;
 	}
 
 	public void createWorkers(int count) {
 		for (int i = 0; i < count; i++) {
-			workers.add(new WorkerThread(this, i));
+			workers.add(new WorkerThread(this));
 		}
 
 		for (WorkerThread worker : workers) {
@@ -69,21 +72,15 @@ public class Tracer {
 
 		if (doneCount == workers.size()) {
 			notify();
-			// System.err.println("notify sent, count=" + doneCount);
 		}
-
-		// System.err.println("done count=" + doneCount);
 	}
 
 	private synchronized void waitForSceneFinish() {
 		try {
-			// System.err.println("waiting for workers on frame=" + frame);
-
 			wait();
 
 			doneCount = 0;
 
-			// System.err.println("------------- end ---------------");
 		} catch (InterruptedException ex) {
 			Logger.getLogger(Tracer.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -97,14 +94,14 @@ public class Tracer {
 		final int hh = height >> 1;
 
 		for (int y = yEnd; y > yStart; y--) {
-			data.lineV.set(scene.view.look);
-			data.lineV.add(scene.view.vert, y);
+			data.lineV.set(view.look);
+			data.lineV.add(view.vert, y);
 
 			for (int x = -hw; x < hw; x++) {
 				data.ray.set(data.lineV);
-				data.ray.add(scene.view.horz, x);
+				data.ray.add(view.horz, x);
 
-				data.p.set(scene.view.camera);
+				data.p.set(view.camera);
 
 				final int rgb = traceObjects(data);
 
@@ -171,16 +168,5 @@ public class Tracer {
 		calculateScene();
 		displayPanel.paint(gr);
 		waitForSceneFinish();
-	}
-
-	public synchronized void calculateOneFrame() {
-		calculateScene();
-		waitForSceneFinish();
-	}
-
-	public void dispose() {
-		for (WorkerThread worker : workers) {
-			worker.quit();
-		}
 	}
 }

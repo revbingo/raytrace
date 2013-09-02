@@ -10,6 +10,8 @@ package tracer;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -36,6 +38,7 @@ public class SimpleRay {
 	private final DisplayPanel displayPanel;
 	private final Tracer tracer;
 	private Scene scene;
+	private View view;
 
 	public JFrame getFrame() {
 		return frame;
@@ -44,15 +47,36 @@ public class SimpleRay {
 	public SimpleRay() {
 		frame = new JFrame(title);
 		frame.setLayout(new BorderLayout());
-		// frame.setSize(1000, 600);
 		frame.setSize(800, 600);
-		// frame.setResizable(false);
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch(e.getKeyCode()) {
+					case 38:
+						view.zoomIn();
+						break;
+					case 40:
+						view.zoomOut();
+						break;
+					case 37:
+						view.rotateLeft();
+						break;
+					case 39:
+						view.rotateRight();
+						break;
+				}
+			}
+		
+		});
 
 		displayPanel = new DisplayPanel();
 
 		scene = new Scene();
-		tracer = new Tracer(displayPanel, scene);
+		view = new View();
+		tracer = new Tracer(displayPanel, scene, view);
 		tracer.createWorkers(16);
 
 		frame.add(displayPanel);
@@ -79,19 +103,13 @@ public class SimpleRay {
 				final long deltaM = (t - t1);
 
 				if (deltaM > 17000000) {
-					// System.err.println("delta=" + deltaM);
-					try {
 						t1 = t;
-
 						scene.animate();
+						view.animate();
 
 						tracer.nextFrame(gr);
 
 						displayPanel.switchBuffers();
-
-					} catch (Exception ex) {
-						Logger.getLogger(SimpleRay.class.getName()).log(Level.SEVERE, null, ex);
-					}
 
 					frameCount++;
 

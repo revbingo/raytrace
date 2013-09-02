@@ -9,6 +9,7 @@
 
 package tracer;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,68 +18,36 @@ import java.util.logging.Logger;
  * 
  * @author Hj. Malthaner
  */
-public class WorkerThread extends Thread
-{
-    private final Tracer tracer;
-    private int yStart;
-    private int yEnd;
-    
-    private final TracerDataSet tracerData;;
-    private volatile boolean go;
+public class WorkerThread extends Thread {
+	private final Tracer tracer;
+	private int yStart;
+	private int yEnd;
 
-    public WorkerThread(Tracer tracer, int i)
-    {
-        this.tracer = tracer;
-        tracerData = new TracerDataSet();
-        
-        setDaemon(true);
-        setName("Worker #" + i);
-    }
-    
-	public void startRendering(int yStart, int yEnd, int width)
-    {
-        this.yStart = yStart;
-        this.yEnd = yEnd;
+	private final TracerDataSet tracerData;;
 
-        tracerData.updateLinepix(width);
-    }
+	public WorkerThread(Tracer tracer) {
+		this.tracer = tracer;
+		tracerData = new TracerDataSet();
 
-    @Override
-    public void run()
-    {
-        go = true;
-        calculate();
+		setDaemon(true);
+	}
 
-        // System.err.println(getName() + " is quitting.");
-    }
+	public void startRendering(int yStart, int yEnd, int width) {
+		this.yStart = yStart;
+		this.yEnd = yEnd;
 
-    private synchronized void calculate()
-    {
-        while(go)
-        {
-            try
-            {
-                // System.err.println(getName() + " waiting");
-                wait();
-                
-                if(go)
-                {
-                    // System.err.println(getName() + " starting yStart=" + yStart + " yEnd=" + yEnd);
-                    tracer.calculateScene(yStart, yEnd, tracerData);            
-                    // System.err.println(getName() + " done, frame=" + frame);
-                    tracer.workerDone();
-                }
-            }
-            catch (InterruptedException ex)
-            {
-                Logger.getLogger(WorkerThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
+		tracerData.updateLinepix(width);
+	}
 
-    synchronized void quit()
-    {
-        go = false;
-        notify();
-    }
+	@Override
+	public synchronized void run() {
+		while (true) {
+			try {
+				wait();
+
+				tracer.calculateScene(yStart, yEnd, tracerData);
+				tracer.workerDone();
+			} catch (InterruptedException ex) {}
+		}
+	}
 }

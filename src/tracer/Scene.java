@@ -21,13 +21,9 @@ public class Scene {
 	private V3 move1;
 	private V3 move2;
 	private V3 move3;	
-
-	
-	public View view;
 	
 	public Scene() {
 		buildScene();
-		this.view = new View();
 	}
 
 	public void buildScene() {
@@ -105,10 +101,6 @@ public class Scene {
 
 //		checkSphereCollision(sd);
 		
-		V3 camera = view.camera;
-		camera.rotate(view.VERTICAL_AXIS, 0.02);
-		view.update();
-//		camera.set(camera.x + 0.03, camera.y, camera.z - 0.08);
 	}
 
 	private V3 checkSphereCollision(double sd) {
