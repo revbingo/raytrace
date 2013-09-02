@@ -12,48 +12,22 @@ public class Scene {
 
 	private ArrayList<SceneObject> objects = new ArrayList<SceneObject>();
 
+	public final V3 light = new V3();
+
 	private SceneObject sphere1;
 	private SceneObject sphere2;
 	private SceneObject sphere3;
 	
 	private V3 move1;
 	private V3 move2;
-	private V3 move3;
-	
-	public final V3 camera = new V3();
-	public final V3 lookAt = new V3();
-	public final V3 look = new V3();
-	public final V3 horz = new V3();
-	public final V3 vert = new V3();
+	private V3 move3;	
 
-	public final V3 light = new V3();
+	
+	public View view;
 	
 	public Scene() {
 		buildScene();
-		calibrateView();
-	}
-
-	private void calibrateView() {
-		camera.set(2, -10, 7);
-		lookAt.set(0, 1, 0);
-
-		light.set(-15, -3, 20);
-		
-		setup();
-	}
-	
-	private void setup() {
-		look.set(lookAt);
-		look.sub(camera);
-
-		horz.set(look.y, -look.x, 0);
-		vert.set(V3.cross(horz, look));
-
-		horz.norm();
-		vert.norm();
-
-		horz.mul(0.018);
-		vert.mul(0.018);
+		this.view = new View();
 	}
 
 	public void buildScene() {
@@ -81,6 +55,8 @@ public class Scene {
 		objects.add(sphere1);
 		objects.add(sphere2);
 		objects.add(sphere3);
+		
+		light.set(-15, -3, 20);
 	}
 
 	public double findIntersection(TracerDataSet data) {
@@ -169,18 +145,5 @@ public class Scene {
 
 		move.x -= x;
 		move.y -= y;
-	}
-	
-	public void setCamera(V3 camera) {
-		this.camera.set(camera);
-	}
-
-	public void setLight(V3 light) {
-		this.light.set(light);
-	}
-
-	public void setLookAt(V3 lookAt) {
-		this.lookAt.set(lookAt);
-		setup();
 	}
 }

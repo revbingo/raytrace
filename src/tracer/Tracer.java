@@ -97,14 +97,14 @@ public class Tracer {
 		final int hh = height >> 1;
 
 		for (int y = yEnd; y > yStart; y--) {
-			data.lineV.set(scene.look);
-			data.lineV.add(scene.vert, y);
+			data.lineV.set(scene.view.look);
+			data.lineV.add(scene.view.vert, y);
 
 			for (int x = -hw; x < hw; x++) {
 				data.ray.set(data.lineV);
-				data.ray.add(scene.horz, x);
+				data.ray.add(scene.view.horz, x);
 
-				data.p.set(scene.camera);
+				data.p.set(scene.view.camera);
 
 				final int rgb = traceObjects(data);
 
