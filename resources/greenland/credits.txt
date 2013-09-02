@@ -1,0 +1,52 @@
+Preface
+=======
+
+Some of the images have been adapted and altered. The sections below list
+the sources (project, author) of the original images, and their licenses.
+
+Contact: varkaleas@users.sourceforge.net
+	 h_malthaner@users.sourceforge.net
+
+Credits
+=======
+
+tiles.tica.zip
+----------------
+
+ID	Name                	Author/Project			License(s)
+
+1   	Metal Post          	Hj. Malthaner               	Artistic License, GPL v2
+2   	Globe Lamp Post     	Hj. Malthaner               	Artistic License, GPL v2
+3   	Tall Metal Lamp Post 	Hj. Malthaner              	Artistic License, GPL v2
+4   	Big Sign (1)        	Hj. Malthaner               	Artistic License, GPL v2
+5   	Big Sign (2)        	Hj. Malthaner               	Artistic License, GPL v2
+6   	Big Wooden Bucket   	Hj. Malthaner               	Artistic License, GPL v2
+7   	Wooden Bucket       	Hj. Malthaner               	Artistic License, GPL v2
+
+29  	Inscribed Pyramid   	Hj. Malthaner               	Artistic License, GPL v2
+30  	Small Mushroom      	Hj. Malthaner               	Artistic License, GPL v2
+31  	Mushroom            	Hj. Malthaner               	Artistic License, GPL v2
+32  	Brown Mushroom      	Hj. Malthaner               	Artistic License, GPL v2
+33  	Big Brown Mushroom  	Hj. Malthaner            	Artistic License, GPL v2
+
+48ff	Starleaf		Hj. Malthaner/Simutrans     	Artistic License, GPL v2
+56ff	Dark Bludanga		Hj. Malthaner     		GPL v2
+76ff	Birch			Hj. Malthaner/Simutrans     	Artistic License, GPL v2
+96ff	Green Appelar		Hj. Malthaner     		GPL v2
+136ff 	Ball Shaped Maple 	MHz/Simutrans pak128      	Artistic License 
+
+500	Average Soil     	Hj. Malthaner                   GPL v2
+502	Old tiles 1        	Hj. Malthaner                   GPL v2
+504	Old tiles 2        	Hj. Malthaner                   GPL v2
+506	Grass 1           	Hj. Malthaner                   GPL v2
+508	Grass 2           	Hj. Malthaner                   GPL v2
+510	Rough Sand 1  		Hj. Malthaner                   GPL v2
+512	Rough Sand 2   		Hj. Malthaner                   GPL v2
+
+670ff	Primrose		Hj. Malthaner			GPL v2
+
+681	Tall Grass		Hj. Malthaner			GPL v2
+682ff   Snowdrops 1             Hj. Malthaner			GPL v2
+683ff   Snowdrops 2             Hj. Malthaner			GPL v2
+684	White Lilly		Hj. Malthaner			GPL v2
+687ff	Blue Oranjito		Hj. Malthaner			GPL v2
