@@ -103,13 +103,13 @@ public class SimpleRay {
 				final long deltaM = (t - t1);
 
 				if (deltaM > 17000000) {
-						t1 = t;
-						scene.animate();
-						view.animate();
+					t1 = t;
+					scene.animate();
+					view.animate();
 
-						tracer.nextFrame(gr);
+					tracer.nextFrame(gr);
 
-						displayPanel.switchBuffers();
+					displayPanel.switchBuffers();
 
 					frameCount++;
 

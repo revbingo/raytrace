@@ -100,7 +100,7 @@ public class DisplayPanel extends JPanel implements DisplayInterface {
 	}
 
 	@Override
-	public void setline(int y, int[] linepix) {
+	public void setLine(int y, int[] linepix) {
 		if (bufferOk) {
 			WritableRaster raster;
 

@@ -10,6 +10,7 @@
 package tracer;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.LockSupport;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,12 +43,10 @@ public class WorkerThread extends Thread {
 	@Override
 	public synchronized void run() {
 		while (true) {
-			try {
-				wait();
+			LockSupport.park();
 
-				tracer.calculateScene(yStart, yEnd, tracerData);
-				tracer.workerDone();
-			} catch (InterruptedException ex) {}
+			tracer.calculateScene(yStart, yEnd, tracerData);
+			tracer.workerDone();
 		}
 	}
 }

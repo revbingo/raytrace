@@ -21,7 +21,7 @@ public interface DisplayInterface
     public int getHeight();
     public int getWidth();
  
-    public void setline(int y, int[] linepix);
+    public void setLine(int y, int[] linepix);
 
     public void paint(Graphics gr);
 }

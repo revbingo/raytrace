@@ -11,8 +11,7 @@ package tracer;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * The actual ray tracer.
@@ -27,12 +26,11 @@ public class Tracer {
 	
 	private final ArrayList<WorkerThread> workers;
 
-	private int doneCount;
+	private CountDownLatch workerLatch;
 	
 	public Tracer(DisplayInterface panel, Scene scene, View view) {
 		this.displayPanel = panel;
 		this.workers = new ArrayList<WorkerThread>();
-		this.doneCount = 0;
 		this.scene = scene;
 		this.view = view;
 	}
@@ -61,29 +59,12 @@ public class Tracer {
 			WorkerThread worker = workers.get(i);
 			worker.startRendering(yStart, yEnd, width);
 
-			synchronized (worker) {
-				worker.notify();
-			}
+			LockSupport.unpark(worker);
 		}
 	}
 
-	public synchronized void workerDone() {
-		doneCount++;
-
-		if (doneCount == workers.size()) {
-			notify();
-		}
-	}
-
-	private synchronized void waitForSceneFinish() {
-		try {
-			wait();
-
-			doneCount = 0;
-
-		} catch (InterruptedException ex) {
-			Logger.getLogger(Tracer.class.getName()).log(Level.SEVERE, null, ex);
-		}
+	public void workerDone() {
+		workerLatch.countDown();
 	}
 
 	void calculateScene(int yStart, int yEnd, TracerDataSet data) {
@@ -107,7 +88,7 @@ public class Tracer {
 
 				data.linepix[hw + x] = rgb;
 			}
-			displayPanel.setline(hh - y, data.linepix);
+			displayPanel.setLine(hh - y, data.linepix);
 		}
 	}
 
@@ -165,8 +146,11 @@ public class Tracer {
 	}
 
 	synchronized void nextFrame(Graphics gr) {
-		calculateScene();
+		workerLatch = new CountDownLatch(workers.size());
 		displayPanel.paint(gr);
-		waitForSceneFinish();
+		calculateScene();
+		try {
+			workerLatch.await();
+		} catch (InterruptedException e) {}
 	}
 }
