@@ -73,15 +73,12 @@ public class SimpleRay {
 		});
 
 		displayPanel = new DisplayPanel();
+		displayPanel.setIgnoreRepaint(true);
+		frame.add(displayPanel);
 
 		scene = new Scene();
 		view = new View();
 		tracer = new Tracer(displayPanel, scene, view);
-		tracer.createWorkers(16);
-
-		frame.add(displayPanel);
-
-		displayPanel.setIgnoreRepaint(true);
 	}
 
 	public void start() {
@@ -89,15 +86,13 @@ public class SimpleRay {
 
 		Textures.init();
 
-		boolean go = true;
-
 		Graphics gr = displayPanel.getGraphics();
 
 		int frameCount = 0;
 		long t0 = System.nanoTime();
 		long t1 = t0;
 
-		while (go) {
+		while (true) {
 			if (displayPanel.isVisible()) {
 				final long t = System.nanoTime();
 				final long deltaM = (t - t1);

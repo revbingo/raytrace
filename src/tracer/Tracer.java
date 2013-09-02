@@ -33,6 +33,8 @@ public class Tracer {
 		this.workers = new ArrayList<WorkerThread>();
 		this.scene = scene;
 		this.view = view;
+		
+		createWorkers(16);
 	}
 
 	public void createWorkers(int count) {
