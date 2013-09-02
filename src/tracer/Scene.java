@@ -10,7 +10,7 @@ import tracer.objects.Sphere;
 
 public class Scene {
 
-	private ArrayList<SceneObject> objects;
+	private ArrayList<SceneObject> objects = new ArrayList<SceneObject>();
 
 	private SceneObject sphere1;
 	private SceneObject sphere2;
@@ -29,7 +29,6 @@ public class Scene {
 	public final V3 light = new V3();
 	
 	public Scene() {
-		this.objects = new ArrayList<SceneObject>();
 		buildScene();
 		calibrateView();
 	}
