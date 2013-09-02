@@ -21,14 +21,6 @@ import java.util.logging.Logger;
 public class Tracer {
 	private final DisplayInterface displayPanel;
 
-	private final V3 camera;
-	private final V3 lookAt;
-	private final V3 look;
-	private final V3 horz;
-	private final V3 vert;
-
-	private final V3 light;
-
 	private final ArrayList<WorkerThread> workers;
 
 	private volatile int doneCount;
@@ -40,22 +32,6 @@ public class Tracer {
 		this.workers = new ArrayList<WorkerThread>();
 		this.doneCount = 0;
 		this.scene = scene;
-
-		camera = new V3();
-		lookAt = new V3();
-
-		look = new V3();
-		light = new V3();
-
-		horz = new V3();
-		vert = new V3();
-
-		camera.set(2, -10, 7);
-		lookAt.set(0, 1, 0);
-
-		light.set(-15, -3, 20);
-
-		setup();
 	}
 
 	public void createWorkers(int count) {
@@ -66,33 +42,6 @@ public class Tracer {
 		for (WorkerThread worker : workers) {
 			worker.start();
 		}
-	}
-
-	public void setCamera(V3 camera) {
-		this.camera.set(camera);
-	}
-
-	public void setLight(V3 light) {
-		this.light.set(light);
-	}
-
-	public void setLookAt(V3 lookAt) {
-		this.lookAt.set(lookAt);
-		setup();
-	}
-
-	private void setup() {
-		look.set(lookAt);
-		look.sub(camera);
-
-		horz.set(look.y, -look.x, 0);
-		vert.set(V3.cross(horz, look));
-
-		horz.norm();
-		vert.norm();
-
-		horz.mul(0.018);
-		vert.mul(0.018);
 	}
 
 	public void calculateScene() {
@@ -148,14 +97,14 @@ public class Tracer {
 		final int hh = height >> 1;
 
 		for (int y = yEnd; y > yStart; y--) {
-			data.lineV.set(look);
-			data.lineV.add(vert, y);
+			data.lineV.set(scene.look);
+			data.lineV.add(scene.vert, y);
 
 			for (int x = -hw; x < hw; x++) {
 				data.ray.set(data.lineV);
-				data.ray.add(horz, x);
+				data.ray.add(scene.horz, x);
 
-				data.p.set(camera);
+				data.p.set(scene.camera);
 
 				final int rgb = traceObjects(data);
 
@@ -177,7 +126,7 @@ public class Tracer {
 			final double t = scene.findIntersection(data);
 
 			if (data.bestObject != null) {
-				final long color = data.bestObject.hit(data.p, data.ray, light, t);
+				final long color = data.bestObject.hit(data.p, data.ray, scene.light, t);
 
 				if (color == -1L) {
 					// mirror, p and v are set up by hit().
@@ -201,7 +150,7 @@ public class Tracer {
 			// shadows
 			// need to calculate ray from data.p to light source
 
-			data.ray.set(light);
+			data.ray.set(scene.light);
 			data.ray.sub(data.p);
 
 			scene.findIntersection(data);
