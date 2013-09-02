@@ -59,28 +59,24 @@ public class Tracer {
 			final int yEnd = Math.min(hh, yStart + stripe);
 
 			WorkerThread worker = workers.get(i);
-			worker.startRendering(yStart, yEnd, width);
+			worker.setRenderingParameters(yStart, yEnd, width);
 
 			LockSupport.unpark(worker);
 		}
 	}
 
-	public void workerDone() {
-		workerLatch.countDown();
-	}
-
-	void calculateScene(int yStart, int yEnd, TracerDataSet data) {
+	void calculateAndSetLineData(int yStart, int yEnd, TracerDataSet data) {
 		int width = data.linepix.length;
 		int height = displayPanel.getHeight();
 
-		final int hw = width >> 1;
-		final int hh = height >> 1;
+		final int halfWidth = width >> 1;
+		final int halfHeight = height >> 1;
 
 		for (int y = yEnd; y > yStart; y--) {
 			data.lineV.set(view.look);
 			data.lineV.add(view.vert, y);
 
-			for (int x = -hw; x < hw; x++) {
+			for (int x = -halfWidth; x < halfWidth; x++) {
 				data.ray.set(data.lineV);
 				data.ray.add(view.horz, x);
 
@@ -88,9 +84,9 @@ public class Tracer {
 
 				final int rgb = traceObjects(data);
 
-				data.linepix[hw + x] = rgb;
+				data.linepix[halfWidth + x] = rgb;
 			}
-			displayPanel.setLine(hh - y, data.linepix);
+			displayPanel.setLine(halfHeight - y, data.linepix);
 		}
 	}
 
@@ -149,10 +145,14 @@ public class Tracer {
 
 	synchronized void nextFrame(Graphics gr) {
 		workerLatch = new CountDownLatch(workers.size());
-		displayPanel.paint(gr);
 		calculateScene();
 		try {
 			workerLatch.await();
 		} catch (InterruptedException e) {}
+		displayPanel.paint(gr);
+	}
+	
+	public void workerDone() {
+		workerLatch.countDown();
 	}
 }

@@ -9,10 +9,7 @@
 
 package tracer;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.LockSupport;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A raytracing worker thread.
@@ -33,7 +30,7 @@ public class WorkerThread extends Thread {
 		setDaemon(true);
 	}
 
-	public void startRendering(int yStart, int yEnd, int width) {
+	public void setRenderingParameters(int yStart, int yEnd, int width) {
 		this.yStart = yStart;
 		this.yEnd = yEnd;
 
@@ -45,7 +42,7 @@ public class WorkerThread extends Thread {
 		while (true) {
 			LockSupport.park();
 
-			tracer.calculateScene(yStart, yEnd, tracerData);
+			tracer.calculateAndSetLineData(yStart, yEnd, tracerData);
 			tracer.workerDone();
 		}
 	}

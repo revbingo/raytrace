@@ -30,8 +30,13 @@ public class Scene {
 		Plane floor = new Plane(new V3(), new V3(0, 0, 1));
 		floor.setMin(new V3(-5, -5, -5));
 		floor.setMax(new V3(5, 5, 5));
+		
+		Plane floor2 = new Plane(new V3(-5, 0, 0), new V3(1, 0, 0));
+		floor.setMin(new V3(-5, -5, -5));
+		floor.setMax(new V3(5, 5, 5));
 
 		objects.add(floor);
+		objects.add(floor2);
 		objects.add(sphere1);
 		
 		light.set(-15, -3, 20);

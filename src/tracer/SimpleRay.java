@@ -12,8 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JFrame;
 
 /**
@@ -24,13 +23,8 @@ import javax.swing.JFrame;
 public class SimpleRay {
 	private static final String title = "HjM's SimpleRay Demo r6";
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
 	public static void main(String[] args) {
-		SimpleRay app;
-		app = new SimpleRay();
+	    SimpleRay app = new SimpleRay();
 		app.start();
 	}
 
@@ -39,10 +33,6 @@ public class SimpleRay {
 	private final Tracer tracer;
 	private Scene scene;
 	private View view;
-
-	public JFrame getFrame() {
-		return frame;
-	}
 
 	public SimpleRay() {
 		frame = new JFrame(title);
@@ -93,39 +83,35 @@ public class SimpleRay {
 		long t1 = t0;
 
 		while (true) {
-			if (displayPanel.isVisible()) {
-				final long t = System.nanoTime();
-				final long deltaM = (t - t1);
+			final long t = System.nanoTime();
+			final long deltaM = (t - t1);
 
-				if (deltaM > 17000000) {
-					t1 = t;
-					scene.animate();
-					view.animate();
+			if (deltaM > 17000000) {
+				t1 = t;
+				scene.animate();
+				view.animate();
 
-					tracer.nextFrame(gr);
+				tracer.nextFrame(gr);
 
-					displayPanel.switchBuffers();
+				displayPanel.switchBuffers();
 
-					frameCount++;
+				frameCount++;
 
-					final long t2 = System.nanoTime();
+				final long t2 = System.nanoTime();
 
-					final int sleepTime = 15 - ((int) (t2 - t)) / 1000000;
-					safeSleep(sleepTime);
-				}
-
-				final long deltaF = (t - t0);
-				if (deltaF > 1000000000) {
-					String s = title + ", FPS: " + frameCount;
-					frame.setTitle(s);
-					t0 = t;
-					frameCount = 0;
-				}
-
-				Thread.yield();
-			} else {
-				safeSleep(200);
+				final int sleepTime = 15 - ((int) (t2 - t)) / 1000000;
+				safeSleep(sleepTime);
 			}
+
+			final long deltaF = (t - t0);
+			if (deltaF > 1000000000) {
+				String s = title + ", FPS: " + frameCount;
+				frame.setTitle(s);
+				t0 = t;
+				frameCount = 0;
+			}
+
+			Thread.yield();
 		}
 	}
 
@@ -134,8 +120,6 @@ public class SimpleRay {
 			if (sleepTime > 1) {
 				Thread.sleep(sleepTime);
 			}
-		} catch (InterruptedException ex) {
-			Logger.getLogger(SimpleRay.class.getName()).log(Level.SEVERE, null, ex);
-		}
+		} catch (InterruptedException ex) {}
 	}
 }
