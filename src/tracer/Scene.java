@@ -104,6 +104,11 @@ public class Scene {
 		bounceBorder(sphere2.getPos(), move2, 1);
 
 //		checkSphereCollision(sd);
+		
+		V3 camera = view.camera;
+		camera.rotate(view.VERTICAL_AXIS, 0.02);
+		view.update();
+//		camera.set(camera.x + 0.03, camera.y, camera.z - 0.08);
 	}
 
 	private V3 checkSphereCollision(double sd) {

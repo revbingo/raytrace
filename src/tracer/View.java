@@ -2,6 +2,7 @@ package tracer;
 
 public class View {
 
+	public static final V3 VERTICAL_AXIS = new V3(0.0,0.0,1.0);
 	public final V3 camera = new V3();
 	public final V3 lookAt = new V3();
 	public final V3 look = new V3();
@@ -16,10 +17,10 @@ public class View {
 		camera.set(2, -10, 7);
 		lookAt.set(0, 1, 0);
 
-		setup();
+		update();
 	}
 	
-	private void setup() {
+	public void update() {
 		look.set(lookAt);
 		look.sub(camera);
 
@@ -32,5 +33,4 @@ public class View {
 		horz.mul(0.018);
 		vert.mul(0.018);
 	}
-
 }
