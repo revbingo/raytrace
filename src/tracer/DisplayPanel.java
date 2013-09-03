@@ -67,6 +67,7 @@ public class DisplayPanel extends JPanel implements DisplayInterface {
 		// ((Graphics2D)gr).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 		// RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		paintBuffered(gr);
+		switchBuffers();
 	}
 
 	private void paintBuffered(Graphics gr) {

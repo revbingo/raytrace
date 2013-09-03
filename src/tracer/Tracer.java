@@ -8,7 +8,6 @@
  */
 package tracer;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.LockSupport;
@@ -53,9 +52,6 @@ public class Tracer {
 			final int yEnd = Math.min(halfHeight, yStart + workerStripe);
 
 			worker.setRenderingParameters(yStart, yEnd, width);
-		}
-
-		for (WorkerThread worker : workers) {
 			worker.start();
 		}
 	}
