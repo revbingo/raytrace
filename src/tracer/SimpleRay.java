@@ -30,10 +30,10 @@ public class SimpleRay {
 
 	private final JFrame frame;
 	private final DisplayPanel displayPanel;
-	private final Tracer tracer;
+	private final TracerCoordinator tracer;
 	private Scene scene;
 	private View view;
-
+	
 	public SimpleRay() {
 		frame = new JFrame(title);
 		frame.setLayout(new BorderLayout());
@@ -45,17 +45,33 @@ public class SimpleRay {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
-					case 38:
-						view.zoomIn();
+					case KeyEvent.VK_UP:
+						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+							view.lookUp();
+						} else {
+							view.zoomIn();
+						}
 						break;
-					case 40:
-						view.zoomOut();
+					case KeyEvent.VK_DOWN:
+						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+							view.lookDown();
+						} else {
+							view.zoomOut();
+						}
 						break;
-					case 37:
-						view.rotateLeft();
+					case KeyEvent.VK_LEFT:
+						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+							view.lookLeft();
+						} else {
+							view.rotateLeft();
+						}
 						break;
-					case 39:
-						view.rotateRight();
+					case KeyEvent.VK_RIGHT:
+						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+							view.lookRight();
+						} else {
+							view.rotateRight();
+						}
 						break;
 				}
 			}
@@ -69,7 +85,7 @@ public class SimpleRay {
 
 		scene = new Scene();
 		view = new View();
-		tracer = new Tracer(displayPanel, scene, view);
+		tracer = new TracerCoordinator(displayPanel, scene, view);
 	}
 
 	public void start() {

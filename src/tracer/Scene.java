@@ -23,7 +23,7 @@ public class Scene {
 
 	public void buildScene() {
 		sphere1 = new Sphere(new V3(2, 0, 2), 2);
-		sphere1.setMaterial(new Material(0xFF7FFF, 0.1));
+		sphere1.setMaterial(new Material(0xFF7FFF, 0));
 
 		move1 = new V3(0.05, 0.07, 0);
 
@@ -37,31 +37,13 @@ public class Scene {
 		light.set(-15, -3, 20);
 	}
 
-	public double findIntersection(TracerDataSet data) {
-		final double raylen2 = data.ray.length2();
-
-		double bestT = Double.MAX_VALUE;
-		data.bestObject = null;
-
-		for (int i = 0; i < objects.size(); i++) {
-			data.tmpP.set(data.p);
-			data.tmpRay.set(data.ray);
-
-			final SceneObject object = objects.get(i);
-			final double t = object.trace(data.tmpP, data.tmpRay, raylen2);
-
-			if (t >= 0 && t < bestT) {
-				data.bestObject = object;
-				bestT = t;
-			}
-		}
-
-		return bestT;
-	}
-	
 	public void animate() {
 		sphere1.translate(move1);
 		bounceBorder(sphere1.getPos(), move1, 2);
+	}
+	
+	public ArrayList<SceneObject> getSceneObjects() {
+		return objects;
 	}
 
 	private void bounceBorder(V3 pos, V3 move, double rad) {

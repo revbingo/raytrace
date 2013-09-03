@@ -16,10 +16,10 @@ import tracer.objects.SceneObject;
  * @author Hj. Malthaner
  */
 public class TracerDataSet {
-	public final V3 ray = new V3();
-	public final V3 p = new V3();
-	public final V3 tmpRay = new V3();
-	public final V3 tmpP = new V3();
+	public final V3 currentRay = new V3();
+	public final V3 camera = new V3();
+	public final V3 tmpCurrentRay = new V3();
+	public final V3 tmpCamera = new V3();
 	public final V3 lineV = new V3();
 	public final V3 hit = new V3();
 

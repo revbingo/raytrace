@@ -8,22 +8,28 @@ public class View {
 	
 	public final V3 camera = new V3();
 	public final V3 lookAt = new V3();
-	public final V3 look = new V3();
+	public final V3 cameraToLookAt = new V3();
 	public final V3 horz = new V3();
 	public final V3 vert = new V3();
 
+	//x is horizontal (positive to right)
+	//y is back to front (positive is to the back)
+	//z is up/down
+	
+	//0,0,0 is centre of the checked board
+	
 	public View() {
 		camera.set(2, -10, 7);
-		lookAt.set(0, 1, 0);
+		lookAt.set(0, 0, 0);
 		update();
 	}
 	
 	private void update() {
-		look.set(lookAt);
-		look.sub(camera);
+		cameraToLookAt.set(lookAt);
+		cameraToLookAt.sub(camera);
 
-		horz.set(look.y, -look.x, 0);
-		vert.set(V3.cross(horz, look));
+		horz.set(cameraToLookAt.y, -cameraToLookAt.x, 0);
+		vert.set(V3.cross(horz, cameraToLookAt));
 		horz.norm();
 		vert.norm();
 
@@ -49,5 +55,21 @@ public class View {
 	
 	public void rotateRight() {
 		camera.rotate(VERTICAL_AXIS, -0.02);		
+	}
+
+	public void lookUp() {
+		lookAt.add(new V3(0,0,0.2));
+	}
+	
+	public void lookDown() {
+		lookAt.add(new V3(0,0,-0.2));
+	}
+	
+	public void lookLeft() {
+		lookAt.add(new V3(-0.2,0,0));
+	}
+	
+	public void lookRight() {
+		lookAt.add(new V3(0.2,0,0));
 	}
 }
