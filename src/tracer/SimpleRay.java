@@ -65,6 +65,7 @@ public class SimpleRay {
 		displayPanel = new DisplayPanel();
 		displayPanel.setIgnoreRepaint(true);
 		frame.add(displayPanel);
+		frame.setVisible(true);
 
 		scene = new Scene();
 		view = new View();
@@ -72,8 +73,6 @@ public class SimpleRay {
 	}
 
 	public void start() {
-		frame.setVisible(true);
-
 		Textures.init();
 
 		Graphics gr = displayPanel.getGraphics();

@@ -37,9 +37,22 @@ public class Tracer {
 		createWorkers(16);
 	}
 
-	public void createWorkers(int count) {
+	public void createWorkers(int count) {		
+		final int height = displayPanel.getHeight();
+		final int width = displayPanel.getWidth();
+		final int halfHeight = height >> 1;
+
+		final int workerStripe = height / count + 1;
+
 		for (int i = 0; i < count; i++) {
-			workers.add(new WorkerThread(this));
+			WorkerThread worker = new WorkerThread(this);
+			workers.add(worker);
+
+			//0,0 is in the centre
+			final int yStart = -halfHeight + i * workerStripe;
+			final int yEnd = Math.min(halfHeight, yStart + workerStripe);
+
+			worker.setRenderingParameters(yStart, yEnd, width);
 		}
 
 		for (WorkerThread worker : workers) {
@@ -48,19 +61,7 @@ public class Tracer {
 	}
 
 	public void calculateScene() {
-		final int height = displayPanel.getHeight();
-		final int width = displayPanel.getWidth();
-		final int hh = height >> 1;
-
-		final int stripe = height / workers.size() + 1;
-
-		for (int i = 0; i < workers.size(); i++) {
-			final int yStart = -hh + i * stripe;
-			final int yEnd = Math.min(hh, yStart + stripe);
-
-			WorkerThread worker = workers.get(i);
-			worker.setRenderingParameters(yStart, yEnd, width);
-
+		for(WorkerThread worker : workers) {
 			LockSupport.unpark(worker);
 		}
 	}

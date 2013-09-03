@@ -40,7 +40,7 @@ public class WorkerThread extends Thread {
 	@Override
 	public synchronized void run() {
 		while (true) {
-			LockSupport.park();
+			LockSupport.park(this);
 
 			tracer.calculateAndSetLineData(yStart, yEnd, tracerData);
 			tracer.workerDone();
