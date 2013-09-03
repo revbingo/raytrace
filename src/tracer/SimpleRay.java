@@ -89,9 +89,9 @@ public class SimpleRay {
 				t1 = t;
 				scene.animate();
 				view.animate();
+				tracer.nextFrame();
 
-				tracer.nextFrame(gr);
-
+				displayPanel.paint(gr);
 				displayPanel.switchBuffers();
 
 				frameCount++;

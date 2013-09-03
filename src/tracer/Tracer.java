@@ -60,12 +60,6 @@ public class Tracer {
 		}
 	}
 
-	public void calculateScene() {
-		for(WorkerThread worker : workers) {
-			LockSupport.unpark(worker);
-		}
-	}
-
 	void calculateAndSetLineData(int yStart, int yEnd, TracerDataSet data) {
 		int width = data.linepix.length;
 		int height = displayPanel.getHeight();
@@ -144,13 +138,14 @@ public class Tracer {
 		}
 	}
 
-	synchronized void nextFrame(Graphics gr) {
-		workerLatch = new CountDownLatch(workers.size());
-		calculateScene();
+	synchronized void nextFrame() {
 		try {
+			workerLatch = new CountDownLatch(workers.size());
+			for(WorkerThread worker : workers) {
+				LockSupport.unpark(worker);
+			}
 			workerLatch.await();
 		} catch (InterruptedException e) {}
-		displayPanel.paint(gr);
 	}
 	
 	public void workerDone() {
