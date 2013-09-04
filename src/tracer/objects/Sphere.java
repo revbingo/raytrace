@@ -60,10 +60,10 @@ public class Sphere extends AbstractSceneObject {
 	}
 
 	@Override
-	public long hit(V3 p, V3 ray, V3 light, final double t) {
-		p.add(ray, t * ALMOST_ONE);
+	public long hit(V3 camera, V3 ray, V3 light, final double t) {
+		camera.add(ray, t * ALMOST_ONE);
 
-		V3 normal = V3.make(p);
+		V3 normal = V3.make(camera);
 		normal.sub(pos);
 
 		final long color;
@@ -73,7 +73,7 @@ public class Sphere extends AbstractSceneObject {
 			color = -1L;
 		} else {
 			V3 lv = new V3(light);
-			lv.sub(p);
+			lv.sub(camera);
 
 			final int phong = phong(lv, normal, ray);
 			color = RGB.shade(material.color, phong);

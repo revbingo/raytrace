@@ -13,96 +13,82 @@ import tracer.RGB;
 import tracer.V3;
 
 /**
- * Limited to simple round spheres, this is faster than the generic
- * sphere object, which also support scaling and rotation.
+ * Limited to simple round spheres, this is faster than the generic sphere
+ * object, which also support scaling and rotation.
  * 
  * @author Hj. Malthaner
  */
-public class FastSphere extends AbstractSceneObject
-{
-    private double r2;
-    private V3 pos;
-    
-    public FastSphere(V3 pos, double rad)
-    {
-        super();
-        
-        this.pos = pos;
-        r2 = rad*rad;
-    }
+public class FastSphere extends AbstractSceneObject {
+	private double r2;
+	private V3 pos;
 
-    @Override
-    public double trace(final V3 camera, final V3 ray, final double raylen2)
-    {
-        final double a = camera.x - pos.x;
-        final double b = camera.y - pos.y;
-        final double c = camera.z - pos.z;
-        
-        final double e = V3.dot(a, b, c, ray);
-        
-        final double disk = e*e - raylen2*(a*a + b*b + c*c - r2);
-        
-        if(disk < 0)
-        {
-            return Double.MAX_VALUE;
-        }
-        else
-        {
-            final double t = (-e - Math.sqrt(disk));
+	public FastSphere(V3 pos, double rad) {
+		super();
 
-            if(t < 0.0001)
-            {
-                // intersection behind camera point
-                return Double.MAX_VALUE;                
-            }
-            
-            return t / raylen2;
-        }
-    }
+		this.pos = pos;
+		r2 = rad * rad;
+	}
 
-    @Override
-    public long hit(V3 p, V3 ray, V3 light, final double t)
-    {
-        p.add(ray, t*ALMOST_ONE);
-  
-        V3 normal = V3.make(p);
-        normal.sub(pos);
+	@Override
+	public double trace(final V3 camera, final V3 ray, final double raylen2) {
+		final double a = camera.x - pos.x;
+		final double b = camera.y - pos.y;
+		final double c = camera.z - pos.z;
 
-        final long color;
-        if(material.reflection > 0)
-        {
-            fastReflect(ray, normal, r2);
+		final double e = V3.dot(a, b, c, ray);
 
-            color = -1L;
-        }
-        else
-        {
-            V3 lv = new V3(light);
-            lv.sub(p);        
-            
-            final int phong = phong(lv, normal, ray);
-            color = RGB.shade(material.color, phong);
-        }
-        
-        V3.put(normal);
-        
-        return color;
-    }
+		final double disk = e * e - raylen2 * (a * a + b * b + c * c - r2);
 
-    @Override
-    public V3 getPos()
-    {
-        return pos;
-    }
-    
-    public void setPos(V3 v)
-    {
-        pos.set(v);
-    }
+		if (disk < 0) {
+			return Double.MAX_VALUE;
+		} else {
+			final double distanceToObject = (-e - Math.sqrt(disk));
 
-    @Override
-    public void translate(V3 v)
-    {
-        pos.add(v);
-    }
+			if (distanceToObject < 0.0001) {
+				// intersection behind camera point
+				return Double.MAX_VALUE;
+			}
+
+			return distanceToObject / raylen2;
+		}
+	}
+
+	@Override
+	public long hit(V3 p, V3 ray, V3 light, final double t) {
+		p.add(ray, t * ALMOST_ONE);
+
+		V3 normal = V3.make(p);
+		normal.sub(pos);
+
+		final long color;
+		if (material.reflection > 0) {
+			fastReflect(ray, normal, r2);
+
+			color = -1L;
+		} else {
+			V3 lv = new V3(light);
+			lv.sub(p);
+
+			final int phong = phong(lv, normal, ray);
+			color = RGB.shade(material.color, phong);
+		}
+
+		V3.put(normal);
+
+		return color;
+	}
+
+	@Override
+	public V3 getPos() {
+		return pos;
+	}
+
+	public void setPos(V3 v) {
+		pos.set(v);
+	}
+
+	@Override
+	public void translate(V3 v) {
+		pos.add(v);
+	}
 }

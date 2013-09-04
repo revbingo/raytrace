@@ -14,6 +14,7 @@ public class Scene {
 	public final V3 light = new V3();
 
 	private SceneObject sphere1;
+	private SceneObject sphere2;
 	
 	private V3 move1;
 	
@@ -23,8 +24,11 @@ public class Scene {
 
 	public void buildScene() {
 		sphere1 = new Sphere(new V3(2, 0, 2), 2);
-		sphere1.setMaterial(new Material(0xFF7FFF, 0));
+		sphere1.setMaterial(new Material(0xFF7FFF, 1));
 
+		sphere2 = new Sphere(new V3(2, 0, 5), 1);
+		sphere2.setMaterial(new Material(0xFF7FFF, 1));
+		
 		move1 = new V3(0.05, 0.07, 0);
 
 		Plane floor = new Plane(new V3(), new V3(0, 0, 1));
@@ -33,6 +37,7 @@ public class Scene {
 
 		objects.add(floor);
 		objects.add(sphere1);
+		objects.add(sphere2);
 		
 		light.set(-15, -3, 20);
 	}
