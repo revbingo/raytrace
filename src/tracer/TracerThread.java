@@ -21,7 +21,7 @@ import tracer.objects.SceneObject;
  * @author Hj. Malthaner
  */
 public class TracerThread extends Thread {
-	private static final long NO_COLOR = -1L;
+	private static final long REFLECTED = -1L;
 	private final TracerCoordinator coordinator;
 	private int yStart;
 	private int yEnd;
@@ -90,46 +90,39 @@ public class TracerThread extends Thread {
 		while (brightness > 16) {
 			final double distanceToNearestObject = findIntersection(tracerData);
 
+			//there was no object intersected
 			if(tracerData.bestObject == null) break;
 			
 			final long color = tracerData.bestObject.hit(tracerData.camera, tracerData.currentRay, scene.light, distanceToNearestObject);
 
-			if (color == NO_COLOR) {
-				// mirror, p and v are set up by hit().
-				brightness = brightness * 230 >> 8;
+			if (color == REFLECTED) {
+				//ray is slightly dimmed on reflection
+				brightness = (int)(brightness * 0.9);
+				
+				tracerData.currentRay.norm();
+				final int tx = (int) (Textures.clouds.getWidth() * (tracerData.currentRay.x + 1.0) * 0.5);
+				final int ty = (int) (Textures.clouds.getHeight() * (tracerData.currentRay.y + 1.0) * 0.5);
+
+				objectRgb = RGB.spread(Textures.clouds.getRGB(tx, ty));
+				
 			} else {
 				objectRgb = color;
+				// shadows
+				// need to calculate ray from tracerData.p to light source
+
+				tracerData.currentRay.set(scene.light);
+				tracerData.currentRay.sub(tracerData.camera);
+
+				findIntersection(tracerData);
+				if (tracerData.bestObject != null) {
+					// shadow
+					brightness = brightness * 80 >> 8;
+				}
 				break;
 			}
 		}
 
-		if (objectRgb == -1) {
-			// Nothing hit
-
-			tracerData.currentRay.norm();
-			final int tx = (int) (Textures.clouds.getWidth() * (tracerData.currentRay.x + 1.0) * 0.5);
-			final int ty = (int) (Textures.clouds.getHeight() * (tracerData.currentRay.y + 1.0) * 0.5);
-
-			objectRgb = RGB.spread(Textures.clouds.getRGB(tx, ty));
-		} else {
-			// shadows
-			// need to calculate ray from tracerData.p to light source
-
-			tracerData.currentRay.set(scene.light);
-			tracerData.currentRay.sub(tracerData.camera);
-
-			findIntersection(tracerData);
-			if (tracerData.bestObject != null) {
-				// shadow
-				brightness = brightness * 80 >> 8;
-			}
-		}
-
-		if (objectRgb == 0xFF00000000000000L) {
-			return brightness >= 160 ? 0x00000000 : 0xFF000000;
-		} else {
-			return RGB.shadeAndCompact(objectRgb, brightness);
-		}
+		return RGB.shadeAndCompact(objectRgb, brightness);
 	}
 	
 	private double findIntersection(TracerDataSet data) {
@@ -140,8 +133,6 @@ public class TracerThread extends Thread {
 
 		ArrayList<SceneObject> objects = scene.getSceneObjects();
 		for (int i = 0; i < objects.size(); i++) {
-//			data.tmpCamera.set(data.camera);
-//			data.tmpCurrentRay.set(data.currentRay);
 
 			final SceneObject object = objects.get(i);
 			final double distanceToObject = object.distanceToIntersection(data.camera, data.currentRay, raylen2);
