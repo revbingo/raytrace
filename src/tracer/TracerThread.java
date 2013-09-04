@@ -87,18 +87,22 @@ public class TracerThread extends Thread {
 		int brightness = 255;
 		long objectRgb = -1;
 
-		while (brightness > 16) {
+		boolean rayAbsorbed = false;
+		//loop until the ray "runs out of brightness", or
+		while (brightness > 16 && !rayAbsorbed) {
 			final double distanceToNearestObject = findIntersection(tracerData);
 
 			//there was no object intersected
 			if(tracerData.bestObject == null) break;
 			
+			//this modifies the currentRay on reflection
 			final long color = tracerData.bestObject.hit(tracerData.camera, tracerData.currentRay, scene.light, distanceToNearestObject);
 
 			if (color == REFLECTED) {
 				//ray is slightly dimmed on reflection
 				brightness = (int)(brightness * 0.9);
 				
+				//this is now the reflected ray
 				tracerData.currentRay.norm();
 				final int tx = (int) (Textures.clouds.getWidth() * (tracerData.currentRay.x + 1.0) * 0.5);
 				final int ty = (int) (Textures.clouds.getHeight() * (tracerData.currentRay.y + 1.0) * 0.5);
@@ -106,19 +110,21 @@ public class TracerThread extends Thread {
 				objectRgb = RGB.spread(Textures.clouds.getRGB(tx, ty));
 				
 			} else {
+				rayAbsorbed = true;
 				objectRgb = color;
-				// shadows
-				// need to calculate ray from tracerData.p to light source
 
+				//but see if this was in shadow
+				
+				//ray from the light to the camera
 				tracerData.currentRay.set(scene.light);
 				tracerData.currentRay.sub(tracerData.camera);
 
+				//see if it intersects anything
 				findIntersection(tracerData);
 				if (tracerData.bestObject != null) {
-					// shadow
-					brightness = brightness * 80 >> 8;
+					//if so, reduce the brightness
+					brightness = (int) (brightness * 0.3);
 				}
-				break;
 			}
 		}
 
