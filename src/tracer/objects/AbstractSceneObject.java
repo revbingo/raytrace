@@ -20,16 +20,9 @@ public abstract class AbstractSceneObject implements SceneObject {
 	protected final static double ONE_PLUS = 1.0 + 1E-10;
 
 	protected Material material;
-	protected double scaleX;
-	protected double scaleY;
-	protected double scaleZ;
 
 	protected AbstractSceneObject() {
 		this.material = new Material(0x777777, 0);
-
-		scaleX = 1.0;
-		scaleY = 1.0;
-		scaleZ = 1.0;
 	}
 
 	@Override
@@ -37,18 +30,10 @@ public abstract class AbstractSceneObject implements SceneObject {
 		this.material = material;
 	}
 
-	@Override
-	public void scale(double x, double y, double z) {
-		// some day this should become matrix operations ...
-		scaleX = 1 / x;
-		scaleY = 1 / y;
-		scaleZ = 1 / z;
-	}
-
 	public void reflect(V3 ray, final V3 normal) {
-		final double x = normal.x * scaleX;
-		final double y = normal.y * scaleY;
-		final double z = normal.z * scaleZ;
+		final double x = normal.x;
+		final double y = normal.y;
+		final double z = normal.z;
 
 		final double f = 2.0 * V3.dot(x, y, z, ray) / (x * x + y * y + z * z);
 
@@ -71,7 +56,6 @@ public abstract class AbstractSceneObject implements SceneObject {
 
 	public int phong(V3 light, V3 oNormal, V3 ray) {
 		final V3 normal = V3.make(oNormal);
-		normal.mul(scaleX, scaleY, scaleZ);
 
 		final double d = V3.dot(light, normal);
 

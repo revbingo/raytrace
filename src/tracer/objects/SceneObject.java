@@ -16,17 +16,14 @@ import tracer.V3;
  * 
  * @author Hj. Malthaner
  */
-public interface SceneObject
-{
-    public void setMaterial(Material material);
-    
-    public double trace(V3 camera, V3 ray, double raylen2);
-    public long hit(V3 camera, V3 ray, V3 light, double t);
+public interface SceneObject {
+	public void setMaterial(Material material);
 
-    
-    public void scale(double x, double y, double z);
-    
-    public void translate(V3 move);
+	public double trace(V3 camera, V3 ray, double raylen2);
 
-    public V3 getPos();
+	public long hit(V3 camera, V3 ray, V3 light, double t);
+
+	public void translate(V3 move);
+
+	public V3 getPos();
 }

@@ -29,16 +29,13 @@ public class Sphere extends AbstractSceneObject {
 
 	@Override
 	public double trace(final V3 camera, final V3 ray, final double raylen2) {
-		double px = (camera.x - pos.x) * scaleX;
-		double py = (camera.y - pos.y) * scaleY;
-		double pz = (camera.z - pos.z) * scaleZ;
+		double px = (camera.x - pos.x);
+		double py = (camera.y - pos.y);
+		double pz = (camera.z - pos.z);
 
-		double rx = ray.x * scaleX;
-		double ry = ray.y * scaleY;
-		double rz = ray.z * scaleZ;
-
-		final double e = px * rx + py * ry + pz * rz;
-		final double scaledLength2 = rx * rx + ry * ry + rz * rz;
+		final double e = px * ray.x + py * ray.y + pz * ray.z;
+		
+		final double scaledLength2 = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
 		final double disk = e * e - scaledLength2 * (px * px + py * py + pz * pz - r2);
 
 		if (disk < 0) {
