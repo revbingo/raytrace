@@ -45,7 +45,7 @@ public class Cylinder extends AbstractSceneObject {
 	}
 
 	@Override
-	public double trace(final V3 p, final V3 ray, final double raylen2) {
+	public double distanceToIntersection(final V3 p, final V3 ray, final double raylen2) {
 		V3 Y = V3.cross(ray, direction);
 
 		final double a = 2 * V3.dot(Y, Y);
@@ -108,7 +108,7 @@ public class Cylinder extends AbstractSceneObject {
 	}
 
 	private double testCaps(V3 tmp, V3 p, V3 ray, double raylen2) {
-		double pt1 = cap1.trace(p, ray, raylen2);
+		double pt1 = cap1.distanceToIntersection(p, ray, raylen2);
 		if (pt1 < Double.MAX_VALUE) {
 			tmp.set(p);
 			tmp.add(ray, pt1);
@@ -122,7 +122,7 @@ public class Cylinder extends AbstractSceneObject {
 			}
 		}
 
-		double pt2 = cap2.trace(p, ray, raylen2);
+		double pt2 = cap2.distanceToIntersection(p, ray, raylen2);
 		if (pt2 < Double.MAX_VALUE) {
 			tmp.set(p);
 			tmp.add(ray, pt2);

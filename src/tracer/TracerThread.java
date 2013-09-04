@@ -122,7 +122,7 @@ public class TracerThread extends Thread {
 			findIntersection(tracerData);
 			if (tracerData.bestObject != null) {
 				// shadow
-				brightness = brightness * 160 >> 8;
+				brightness = brightness * 80 >> 8;
 			}
 		}
 
@@ -145,7 +145,7 @@ public class TracerThread extends Thread {
 			data.tmpCurrentRay.set(data.currentRay);
 
 			final SceneObject object = objects.get(i);
-			final double distanceToObject = object.trace(data.tmpCamera, data.tmpCurrentRay, raylen2);
+			final double distanceToObject = object.distanceToIntersection(data.tmpCamera, data.tmpCurrentRay, raylen2);
 
 			if (distanceToObject >= 0 && distanceToObject < distanceToNearestObject) {
 				data.bestObject = object;

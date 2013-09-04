@@ -17,42 +17,53 @@ import tracer.V3;
  * @author Hj. Malthaner
  */
 public class Sphere extends AbstractSceneObject {
-	private double r2;
+	private double radiusSquared;
 	private V3 pos;
 
 	public Sphere(V3 pos, double rad) {
 		super();
 
 		this.pos = pos;
-		r2 = rad * rad;
+		radiusSquared = rad * rad;
 	}
 
 	@Override
-	public double trace(final V3 camera, final V3 ray, final double raylen2) {
+	public double distanceToIntersection(final V3 camera, final V3 ray, final double raylen2) {
 		double px = (camera.x - pos.x);
 		double py = (camera.y - pos.y);
 		double pz = (camera.z - pos.z);
-
-		final double e = px * ray.x + py * ray.y + pz * ray.z;
 		
-		final double scaledLength2 = ray.x * ray.x + ray.y * ray.y + ray.z * ray.z;
-		final double disk = e * e - scaledLength2 * (px * px + py * py + pz * pz - r2);
+		V3 cameraToObjectPosition = new V3(px, py, pz);
+
+		final double projection = V3.dot(cameraToObjectPosition, ray);
+		
+		final double projectionSquared = projection * projection;
+		
+		final double lengthOfRaySquared = ray.length2();
+		final double lengthOfCameraToObjectSquared = cameraToObjectPosition.length2();
+
+		final double distanceToEdgeOfObject = lengthOfCameraToObjectSquared - radiusSquared;
+		
+		final double disk = projectionSquared - lengthOfRaySquared * (distanceToEdgeOfObject);
 
 		if (disk < 0) {
 			// intersection behind camera point
 			return Double.MAX_VALUE;
 		} else {
+			//potentially intersect in two places, front and back
 			final double root = Math.sqrt(disk);
-			final double t1 = (-e - root);
-			final double t2 = (-e + root);
+			final double t1 = (-projection - root);
+			final double t2 = (-projection + root);
 
+			//assume it's the front 
 			double t = t1;
 
+			//but if that's behind us, we're in the middle of the sphere!
 			if (t1 < 0) {
 				t = t2;
 			}
 
-			return t / scaledLength2;
+			return t / lengthOfRaySquared;
 		}
 	}
 

@@ -23,8 +23,8 @@ public class Scene {
 	}
 
 	public void buildScene() {
-		sphere1 = new Sphere(new V3(2, 0, 2), 2);
-		sphere1.setMaterial(new Material(0xFF7FFF, 1));
+		sphere1 = new Sphere(new V3(2, 0, 2), 3);
+		sphere1.setMaterial(new Material(0xFF7FFF, 0));
 
 		sphere2 = new Sphere(new V3(2, 0, 5), 1);
 		sphere2.setMaterial(new Material(0xFF7FFF, 1));

@@ -32,7 +32,7 @@ public class InvisiSphere extends AbstractSceneObject
     }
 
     @Override
-    public double trace(final V3 camera, final V3 ray, final double raylen2)
+    public double distanceToIntersection(final V3 camera, final V3 ray, final double raylen2)
     {
 //        final double a = camera.x - pos.x;
 //        final double b = camera.y - pos.y;

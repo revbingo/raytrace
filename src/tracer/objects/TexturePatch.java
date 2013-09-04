@@ -47,9 +47,9 @@ public class TexturePatch extends AbstractSceneObject
     
     
     @Override
-    public double trace(final V3 p, final V3 ray, final double raylen2)
+    public double distanceToIntersection(final V3 p, final V3 ray, final double raylen2)
     {
-        final double t = plane.trace(p, ray, raylen2);
+        final double t = plane.distanceToIntersection(p, ray, raylen2);
         
         if(t >= 0 && t < Double.MAX_VALUE)
         {

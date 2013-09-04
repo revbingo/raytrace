@@ -27,14 +27,14 @@ public class Difference extends AbstractSceneObject
     }
 
     @Override
-    public double trace(V3 camera, V3 ray, double raylen2)
+    public double distanceToIntersection(V3 camera, V3 ray, double raylen2)
     {
-        final double st1 = subt.trace(camera, ray, raylen2);
+        final double st1 = subt.distanceToIntersection(camera, ray, raylen2);
         double result = Double.MAX_VALUE;
         
         if(st1 > 0 && st1 < Double.MAX_VALUE)
         {
-            final double mt1 = minu.trace(camera, ray, raylen2);
+            final double mt1 = minu.distanceToIntersection(camera, ray, raylen2);
             
             if(st1 <= mt1)
             {
@@ -45,12 +45,12 @@ public class Difference extends AbstractSceneObject
                 final V3 p = V3.make(camera);
                 p.add(ray, st1 * ONE_PLUS);
                 
-                final double mt2 = minu.trace(p, ray, raylen2);
+                final double mt2 = minu.distanceToIntersection(p, ray, raylen2);
 
                 p.set(camera);
                 p.add(ray, st1 * ONE_PLUS);
 
-                final double st2 = subt.trace(p, ray, raylen2);
+                final double st2 = subt.distanceToIntersection(p, ray, raylen2);
                 
                 if(mt2 <= st2)
                 {
@@ -67,7 +67,7 @@ public class Difference extends AbstractSceneObject
     @Override
     public long hit(V3 camera, V3 ray, V3 light, double t)
     {        
-        final double st1 = subt.trace(camera, ray, ray.length2());
+        final double st1 = subt.distanceToIntersection(camera, ray, ray.length2());
 
         if(Math.abs(t - st1) < 0.000001)
         {

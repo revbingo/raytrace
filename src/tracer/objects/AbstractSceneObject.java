@@ -88,7 +88,7 @@ public abstract class AbstractSceneObject implements SceneObject {
 	}
 
 	@Override
-	abstract public double trace(V3 camera, V3 ray, double raylen2);
+	abstract public double distanceToIntersection(V3 camera, V3 ray, double raylen2);
 
 	@Override
 	abstract public long hit(V3 camera, V3 ray, V3 light, double t);

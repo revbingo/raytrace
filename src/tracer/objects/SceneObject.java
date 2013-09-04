@@ -19,7 +19,7 @@ import tracer.V3;
 public interface SceneObject {
 	public void setMaterial(Material material);
 
-	public double trace(V3 camera, V3 ray, double raylen2);
+	public double distanceToIntersection(V3 camera, V3 ray, double raylen2);
 
 	public long hit(V3 camera, V3 ray, V3 light, double t);
 

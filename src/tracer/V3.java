@@ -37,7 +37,7 @@ public class V3 {
 
 		return v;
 	}
-
+	
 	public static void put(final V3 v) {
 		if (v.myPool == null) {
 			pools.get().add(v);

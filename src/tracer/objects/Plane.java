@@ -49,7 +49,7 @@ public class Plane extends AbstractSceneObject {
 	}
 
 	@Override
-	public double trace(final V3 camera, final V3 ray, double raylen2) {
+	public double distanceToIntersection(final V3 camera, final V3 ray, double raylen2) {
 		final double d = V3.dot(ray, normal);
 
 		if (d != 0) {

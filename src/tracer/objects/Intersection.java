@@ -27,10 +27,10 @@ public class Intersection extends AbstractSceneObject
     }
 
     @Override
-    public double trace(V3 camera, V3 ray, double raylen2)
+    public double distanceToIntersection(V3 camera, V3 ray, double raylen2)
     {
-        double t1 = one.trace(camera, ray, raylen2);
-        double t2 = two.trace(camera, ray, raylen2);
+        double t1 = one.distanceToIntersection(camera, ray, raylen2);
+        double t2 = two.distanceToIntersection(camera, ray, raylen2);
         
         if(t1 >= 0 && t1 < Double.MAX_VALUE &&
            t2 >= 0 && t2 < Double.MAX_VALUE)
@@ -52,7 +52,7 @@ public class Intersection extends AbstractSceneObject
     @Override
     public long hit(V3 camera, V3 ray, V3 light, double t)
     {        
-        double mt1 = one.trace(camera, ray, ray.length2());
+        double mt1 = one.distanceToIntersection(camera, ray, ray.length2());
 
         // System.err.println("Hit at mt=" + mt1);
         
