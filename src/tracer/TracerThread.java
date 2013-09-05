@@ -104,10 +104,10 @@ public class TracerThread extends Thread {
 				
 				//this is now the reflected ray
 				tracerData.currentRay.norm();
-				final int tx = (int) (Textures.clouds.getWidth() * (tracerData.currentRay.x + 1.0) * 0.5);
-				final int ty = (int) (Textures.clouds.getHeight() * (tracerData.currentRay.y + 1.0) * 0.5);
 
-				objectRgb = RGB.spread(Textures.clouds.getRGB(tx, ty));
+				//assume RGB will be default background (clouds) - this will get overridden if the
+				//ray hits something else next time
+				objectRgb = getBackgroundRGB(tracerData);
 				
 			} else {
 				rayAbsorbed = true;
@@ -128,7 +128,15 @@ public class TracerThread extends Thread {
 			}
 		}
 
+		//apply brightness to the RGB, and compact to an int
 		return RGB.shadeAndCompact(objectRgb, brightness);
+	}
+
+	private long getBackgroundRGB(TracerDataSet tracerData) {
+		final int tx = (int) (Textures.clouds.getWidth() * (tracerData.currentRay.x + 1.0) * 0.5);
+		final int ty = (int) (Textures.clouds.getHeight() * (tracerData.currentRay.y + 1.0) * 0.5);
+
+		return RGB.spread(Textures.clouds.getRGB(tx, ty));
 	}
 	
 	private double findIntersection(TracerDataSet data) {

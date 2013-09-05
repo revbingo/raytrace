@@ -23,8 +23,8 @@ public class RGB {
 		return 0xFF000000 | (((int) (rgb >> 16)) & 0xFF0000) | (((int) rgb >> 8) & 0xFF00) | ((int) rgb & 0xFF);
 	}
 
-	static int shadeAndCompact(long lrgb, int light) {
-		final long c = (lrgb * light) >> 8;
+	static int shadeAndCompact(long lrgb, int brightness) {
+		final long c = (lrgb * brightness) >> 8;
 		return compact(c & 0xFF00FF00FFL);
 	}
 
