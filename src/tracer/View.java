@@ -21,7 +21,6 @@ public class View {
 	public View() {
 		camera.set(2, -10, 7);
 		lookAt.set(0, 0, 0);
-		update();
 	}
 	
 	private void update() {
