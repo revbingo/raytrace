@@ -96,66 +96,78 @@ public class V3 {
 		return Math.sqrt(length2());
 	}
 
-	public final void reverse() {
+	public final V3 reverse() {
 		x = -x;
 		y = -y;
 		z = -z;
+		return this;
 	}
 
-	public final void sub(final V3 other) {
+	public final V3 sub(final V3 other) {
 		x -= other.x;
 		y -= other.y;
 		z -= other.z;
+		return this;
 	}
 
-	public final void add(final V3 other) {
+	public final V3 add(final V3 other) {
 		x += other.x;
 		y += other.y;
 		z += other.z;
+		return this;
 	}
 
-	public final void div(final double d) {
+	public final V3 div(final double d) {
 		x /= d;
 		y /= d;
 		z /= d;
+		return this;
 	}
 
-	public final void mul(final double d) {
+	public final V3 mul(final double d) {
 		x *= d;
 		y *= d;
 		z *= d;
+		return this;
 	}
 
-	public void mul(double scaleX, double scaleY, double scaleZ) {
+	public V3 mul(double scaleX, double scaleY, double scaleZ) {
 		x *= scaleX;
 		y *= scaleY;
 		z *= scaleZ;
+		return this;
 	}
 
-	public final void norm() {
+	public final V3 norm() {
 		final double length = Math.sqrt(length2());
 		div(length);
+		return this;
 	}
 
-	public final void set(final V3 v) {
+	public final V3 set(final V3 v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
+		
+		return this;
 	}
 
-	public final void add(final V3 ray, final double t) {
-		x += ray.x * t;
-		y += ray.y * t;
-		z += ray.z * t;
-	}
-
-	public final void set(final double x, final double y, final double z) {
+	public final V3 set(final double x, final double y, final double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
+	}
+	
+	public final V3 add(final V3 ray, final double t) {
+		x += ray.x * t;
+		y += ray.y * t;
+		z += ray.z * t;
+		return this;
 	}
 
-	public final void rotate(V3 axis, double r) {
+
+	public final V3 rotate(V3 axis, double r) {
 		final double u = axis.x;
 		final double v = axis.y;
 		final double w = axis.z;
@@ -170,6 +182,7 @@ public class V3 {
 		x = nx;
 		y = ny;
 		z = nz;
+		return this;
 	}
 
 	@Override

@@ -25,16 +25,10 @@ public class View {
 	}
 	
 	private void update() {
-		cameraToLookAt.set(lookAt);
-		cameraToLookAt.sub(camera);
+		cameraToLookAt.set(lookAt).sub(camera);
 
-		horz.set(cameraToLookAt.y, -cameraToLookAt.x, 0);
-		vert.set(V3.cross(horz, cameraToLookAt));
-		horz.norm();
-		vert.norm();
-
-		horz.mul(ZOOM);
-		vert.mul(ZOOM);
+		horz.set(cameraToLookAt.y, -cameraToLookAt.x, 0).norm().mul(ZOOM);
+		vert.set(V3.cross(horz, cameraToLookAt)).norm().mul(ZOOM);
 	}
 	
 	public void animate() {

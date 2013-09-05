@@ -71,8 +71,7 @@ public class Sphere extends AbstractSceneObject {
 	public long hit(V3 camera, V3 ray, V3 light, final double t) {
 		camera.add(ray, t * ALMOST_ONE);
 
-		V3 normal = V3.make(camera);
-		normal.sub(pos);
+		V3 normal = V3.make(camera).sub(pos);
 
 		final long color;
 		if (material.reflection > 0) {
@@ -95,10 +94,6 @@ public class Sphere extends AbstractSceneObject {
 	@Override
 	public V3 getPos() {
 		return pos;
-	}
-
-	public void setPos(V3 v) {
-		pos.set(v);
 	}
 
 	@Override

@@ -65,13 +65,11 @@ public class TracerThread extends Thread {
 		
 		for (int y = yEnd; y > yStart; y--) {
 			//a ray through the scan line - set once and then added to each time below
-			lineV.set(view.cameraToLookAt);
-			lineV.add(view.vert, y);
+			lineV.set(view.cameraToLookAt).add(view.vert, y);
 
 			for (int x = -halfWidth; x < halfWidth; x++) {
 				//the actual ray through the view
-				tracerData.currentRay.set(lineV);
-				tracerData.currentRay.add(view.horz, x);
+				tracerData.currentRay.set(lineV).add(view.horz, x);
 
 				tracerData.camera.set(view.camera);
 
@@ -116,8 +114,7 @@ public class TracerThread extends Thread {
 				//but see if this was in shadow
 				
 				//ray from the light to the camera
-				tracerData.currentRay.set(scene.light);
-				tracerData.currentRay.sub(tracerData.camera);
+				tracerData.currentRay.set(scene.light).sub(tracerData.camera);
 
 				//see if it intersects anything
 				findIntersection(tracerData);
