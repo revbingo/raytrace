@@ -100,12 +100,7 @@ public class TracerThread extends Thread {
 
 			if (color == REFLECTED) {
 				//ray is slightly dimmed on reflection
-				brightness = (int)(brightness * 0.9);
-				
-				//assume RGB will be default background (clouds) - this will get overridden if the
-				//ray hits something else next time
-				objectRgb = getBackgroundRGB(tracerData);
-				
+				brightness = (int)(brightness * 0.9);				
 			} else {
 				rayAbsorbed = true;
 				objectRgb = color;
