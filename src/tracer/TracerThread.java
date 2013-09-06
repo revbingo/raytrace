@@ -60,13 +60,12 @@ public class TracerThread extends Thread {
 		}
 	}
 	
-	void calculateAndSetLinetracerData() {
+	private void calculateAndSetLinetracerData() {
 		V3 lineV = new V3();
 		
 		for (int y = yEnd; y > yStart; y--) {
 			//a ray through the scan line - set once and then added to each time below
 			lineV.set(view.cameraToLookAt).add(view.vert, y);
-
 			for (int x = -halfWidth; x < halfWidth; x++) {
 				//the actual ray through the view
 				tracerData.currentRay.set(lineV).add(view.horz, x);
@@ -100,9 +99,6 @@ public class TracerThread extends Thread {
 				//ray is slightly dimmed on reflection
 				brightness = (int)(brightness * 0.9);
 				
-				//this is now the reflected ray
-				tracerData.currentRay.norm();
-
 				//assume RGB will be default background (clouds) - this will get overridden if the
 				//ray hits something else next time
 				objectRgb = getBackgroundRGB(tracerData);
@@ -130,6 +126,9 @@ public class TracerThread extends Thread {
 	}
 
 	private long getBackgroundRGB(TracerDataSet tracerData) {
+		//this is now the reflected ray
+		tracerData.currentRay.norm();
+
 		final int tx = (int) (Textures.clouds.getWidth() * (tracerData.currentRay.x + 1.0) * 0.5);
 		final int ty = (int) (Textures.clouds.getHeight() * (tracerData.currentRay.y + 1.0) * 0.5);
 

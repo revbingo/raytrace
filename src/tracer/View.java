@@ -2,7 +2,7 @@ package tracer;
 
 public class View {
 
-	private double ZOOM = 0.018;
+	private double zoom = 0.018;
 
 	public static final V3 VERTICAL_AXIS = new V3(0.0,0.0,1.0);
 	
@@ -26,8 +26,8 @@ public class View {
 	private void update() {
 		cameraToLookAt.set(lookAt).sub(camera);
 
-		horz.set(cameraToLookAt.y, -cameraToLookAt.x, 0).norm().mul(ZOOM);
-		vert.set(V3.cross(horz, cameraToLookAt)).norm().mul(ZOOM);
+		horz.set(cameraToLookAt.y, -cameraToLookAt.x, 0).norm().mul(zoom);
+		vert.set(V3.cross(horz, cameraToLookAt)).norm().mul(zoom);
 	}
 	
 	public void animate() {
@@ -35,11 +35,11 @@ public class View {
 	}
 	
 	public void zoomIn() {
-		ZOOM -= 0.001;
+		zoom -= 0.001;
 	}
 	
 	public void zoomOut() {
-		ZOOM += 0.001;
+		zoom += 0.001;
 	}
 	
 	public void rotateLeft() {

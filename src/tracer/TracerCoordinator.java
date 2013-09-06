@@ -60,7 +60,7 @@ public class TracerCoordinator {
 		}
 	}
 
-	synchronized void nextFrame() {
+	public void nextFrame() {
 		try {
 			workerLatch = new CountDownLatch(workers.size());
 			for(TracerThread worker : workers) {

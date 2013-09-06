@@ -24,8 +24,7 @@ public class RGB {
 	}
 
 	static int shadeAndCompact(long lrgb, int brightness) {
-		final long c = (lrgb * brightness) >> 8;
-		return compact(c & 0xFF00FF00FFL);
+		return compact(shade(lrgb, brightness));
 	}
 
 	public static long shade(long lrgb, int light) {
