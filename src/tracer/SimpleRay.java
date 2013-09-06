@@ -44,35 +44,37 @@ public class SimpleRay {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				switch(e.getKeyCode()) {
-					case KeyEvent.VK_UP:
-						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
-							view.lookUp();
-						} else {
-							view.zoomIn();
-						}
-						break;
-					case KeyEvent.VK_DOWN:
-						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
-							view.lookDown();
-						} else {
-							view.zoomOut();
-						}
-						break;
-					case KeyEvent.VK_LEFT:
-						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
-							view.lookLeft();
-						} else {
-							view.rotateLeft();
-						}
-						break;
-					case KeyEvent.VK_RIGHT:
-						if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
-							view.lookRight();
-						} else {
-							view.rotateRight();
-						}
-						break;
+				synchronized (view) {
+					switch(e.getKeyCode()) {
+						case KeyEvent.VK_UP:
+							if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+								view.lookUp();
+							} else {
+								view.zoomIn();
+							}
+							break;
+						case KeyEvent.VK_DOWN:
+							if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+								view.lookDown();
+							} else {
+								view.zoomOut();
+							}
+							break;
+						case KeyEvent.VK_LEFT:
+							if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+								view.lookLeft();
+							} else {
+								view.rotateLeft();
+							}
+							break;
+						case KeyEvent.VK_RIGHT:
+							if(e.getModifiers() == KeyEvent.SHIFT_MASK) {
+								view.lookRight();
+							} else {
+								view.rotateRight();
+							}
+							break;
+					}
 				}
 			}
 		

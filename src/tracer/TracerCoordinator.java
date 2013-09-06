@@ -61,13 +61,15 @@ public class TracerCoordinator {
 	}
 
 	public void nextFrame() {
-		try {
-			workerLatch = new CountDownLatch(workers.size());
-			for(TracerThread worker : workers) {
-				LockSupport.unpark(worker);
-			}
-			workerLatch.await();
-		} catch (InterruptedException e) {}
+		synchronized(view) {
+			try {
+				workerLatch = new CountDownLatch(workers.size());
+				for(TracerThread worker : workers) {
+					LockSupport.unpark(worker);
+				}
+				workerLatch.await();
+			} catch (InterruptedException e) {}
+		}
 	}
 
 	public void workerDone(int yStart, int[] lineData) {
