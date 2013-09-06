@@ -90,7 +90,10 @@ public class TracerThread extends Thread {
 			final double distanceToNearestObject = findIntersection(tracerData);
 
 			//there was no object intersected
-			if(tracerData.bestObject == null) break;
+			if(tracerData.bestObject == null) {
+				objectRgb = getBackgroundRGB(tracerData);
+				break;
+			}
 			
 			//this modifies the currentRay on reflection
 			final long color = tracerData.bestObject.hit(tracerData.camera, tracerData.currentRay, scene.light, distanceToNearestObject);
