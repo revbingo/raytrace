@@ -10,6 +10,7 @@ package tracer.objects;
 
 import tracer.RGB;
 import tracer.Textures;
+import tracer.TraceResult;
 import tracer.V3;
 
 /**
@@ -64,9 +65,11 @@ public class Plane extends AbstractSceneObject {
 	}
 
 	@Override
-	public long hit(V3 p, V3 ray, V3 light, double t) {
-		p.add(ray, t * ALMOST_ONE);
+	public TraceResult hit(V3 p, V3 ray, V3 light, double t) {
+		TraceResult result = new TraceResult();
 
+		p.add(ray, t * ALMOST_ONE);
+		
 		if ((min == null || (p.x >= min.x && p.y >= min.y && p.z >= min.z)) && (max == null || (p.x <= max.x && p.y <= max.y && p.z <= max.z))) {
 			final int px = (int) (p.x + 1024);
 			final int py = (int) (p.y + 1024);
@@ -79,13 +82,15 @@ public class Plane extends AbstractSceneObject {
 				final int tx = (int) (Textures.sand.getWidth() * fractX);
 				final int ty = (int) (Textures.sand.getHeight() * fractY);
 
-				return RGB.spread(Textures.sand.getRGB(tx, ty));
+				result.color = RGB.spread(Textures.sand.getRGB(tx, ty));
 			} else {
-				return checker[f];
+				result.color = checker[f];
 			}
 		} else {
-			return outside;
+			result.color = outside;
 		}
+		
+		return result;
 	}
 
 	@Override

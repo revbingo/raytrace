@@ -17,6 +17,7 @@ import tracer.objects.SceneObject;
  */
 public class TracerDataSet {
 	public final V3 currentRay = new V3();
+	public V3 nextRay;
 	public final V3 camera = new V3();
 	public final V3 hit = new V3();
 

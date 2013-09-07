@@ -9,6 +9,7 @@
 
 package tracer.objects;
 
+import tracer.TraceResult;
 import tracer.V3;
 
 /**
@@ -91,5 +92,5 @@ public abstract class AbstractSceneObject implements SceneObject {
 	abstract public double distanceToIntersection(V3 camera, V3 ray, double raylen2);
 
 	@Override
-	abstract public long hit(V3 camera, V3 ray, V3 light, double t);
+	abstract public TraceResult hit(V3 camera, V3 ray, V3 light, double t);
 }

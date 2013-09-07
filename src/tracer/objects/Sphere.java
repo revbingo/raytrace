@@ -10,6 +10,7 @@
 package tracer.objects;
 
 import tracer.RGB;
+import tracer.TraceResult;
 import tracer.V3;
 
 /**
@@ -68,27 +69,31 @@ public class Sphere extends AbstractSceneObject {
 	}
 
 	@Override
-	public long hit(V3 camera, V3 ray, V3 light, final double t) {
+	public TraceResult hit(V3 camera, V3 ray, V3 light, final double t) {
 		camera.add(ray, t * ALMOST_ONE);
 
 		V3 normal = V3.make(camera).sub(pos);
 
-		final long color;
+		TraceResult result = new TraceResult();
+		
 		if (material.reflection > 0) {
-			reflect(ray, normal);
-
-			color = -1L;
+			V3 nextRay = new V3(ray);
+			reflect(nextRay, normal);
+			
+			result.action = TraceResult.Action.REFLECTED;
+			result.nextRay = nextRay;
 		} else {
 			V3 lv = new V3(light);
 			lv.sub(camera);
 
 			final int phong = phong(lv, normal, ray);
-			color = RGB.shade(material.color, phong);
+			result.color = RGB.shade(material.color, phong);
+			result.action = TraceResult.Action.ABSORBED;
 		}
 
 		V3.put(normal);
-
-		return color;
+		
+		return result;
 	}
 
 	@Override

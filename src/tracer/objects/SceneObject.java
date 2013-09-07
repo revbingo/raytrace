@@ -9,6 +9,7 @@
 
 package tracer.objects;
 
+import tracer.TraceResult;
 import tracer.V3;
 
 /**
@@ -21,7 +22,7 @@ public interface SceneObject {
 
 	public double distanceToIntersection(V3 camera, V3 ray, double raylen2);
 
-	public long hit(V3 camera, V3 ray, V3 light, double t);
+	public TraceResult hit(V3 camera, V3 ray, V3 light, double t);
 
 	public void translate(V3 move);
 

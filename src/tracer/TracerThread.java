@@ -90,19 +90,19 @@ public class TracerThread extends Thread {
 			return RGB.shadeAndCompact(getBackgroundRGB(tracerData), brightness);
 		}
 		
-		//this modifies the currentRay on reflection
-		final long color = tracerData.bestObject.hit(tracerData.camera, tracerData.currentRay, scene.light, distanceToNearestObject);
+		final TraceResult result = tracerData.bestObject.hit(tracerData.camera, tracerData.currentRay, scene.light, distanceToNearestObject);
 
-		if (color == REFLECTED) {
+		if (result.action == TraceResult.Action.REFLECTED) {
 			//ray is slightly dimmed on reflection
 			brightness = (int)(brightness * 0.9);
+			tracerData.currentRay.set(result.nextRay);
 			return traceObjects(tracerData, brightness, objectRgb);
 		} else {
-			if(isInShadow(tracerData, brightness, color)) { 
+			if(isInShadow(tracerData, brightness, result.color)) { 
 				brightness = (int) (brightness * 0.3);
 			}
 			
-			return RGB.shadeAndCompact(color, brightness); 
+			return RGB.shadeAndCompact(result.color, brightness); 
 		}
 	}
 	
